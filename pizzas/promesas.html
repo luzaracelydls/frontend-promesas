@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promesas</title>
+</head>
+<body>
+    
+</body>
+
+<script>
+    function miPizza(ingredientes){
+        const promesaPizza = new Promise(function(resolve, reject){
+            setTimeout(function(){
+                if(ingredientes.includes('piña')){
+                    reject('O sea quien piensa en pizza con piña??????? ');
+                    
+                } else {
+                    resolve(`Ok preparando tu pizza de ${ingredientes.join((', '))}`);
+                }
+            }, 1000)
+        });
+        return promesaPizza;
+    }
+
+   let pizza1 = miPizza(['pepperoni', 'carne', 'salchica', 'queso extra', 'jamon']).then(pizza => {console.log(pizza); console.log('Tiene un tiempo de espera de 5 min')}).catch(error => {console.log(error); console.log('no estamos en hawaii')});
+   let pizza2 = miPizza(['piña', 'jamon']).then(pizza => {console.log(pizza); console.log('Tiene un tiempo de espera de 5 min')}).catch(error => console.log(error));
+   let pizza3 = miPizza(['champiñones', 'aceitunas', 'pimientos']).then(pizza => console.log(pizza)).catch(error => console.log(error));
+
+   let pizzasAll = Promise.all([pizza1, pizza2]).then(respuestas => {
+    console.log('Todas las pizzas están listas');
+   })
+
+   let pizzaPriority = Promise.race([pizza3, pizza2]).then(prioritaria => {
+    console.log('La primera pizza en estar lista es: ');
+    console.log(prioritaria);
+   }).catch(error=> console.log(error, 'error en la pizza prioritaria'));
+
+   let pizzaAny = Promise.allSettled([pizza3, pizza2]).then(resultados => {
+    console.log('Resultados de las pizzas con allSettled: ');
+    console.log(resultados);
+   })
+
+
+
+</script>
+</html>
